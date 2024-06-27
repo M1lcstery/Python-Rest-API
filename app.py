@@ -1,8 +1,16 @@
 from flask import Flask
-from tasks import tasks_blueprints
+from models import db
+from dotenv import load_dotenv
+import os
 
-app = Flask(__name__)
-app.register_blueprint(tasks_blueprints)
-
-if __name__ == '__main__':
-    app.run(port=5000)
+if __name__ == "__main__":
+    load_dotenv()
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.register_blueprint(user_bp)
+    app.register_blueprint(task_bp)
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True, port=5000)
