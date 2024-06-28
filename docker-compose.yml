@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  pythonrestapi:
+    image: pythonrestapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - src/.env
+    ports:
+      - 5000:5000
